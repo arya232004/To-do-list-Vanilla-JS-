@@ -221,6 +221,7 @@ footer {
     position: absolute;
     right: 40px;
     transform: translateY(200%) !important;
+    cursor: pointer;
 }
 
 .songname {
@@ -239,4 +240,5 @@ footer {
     position: absolute;
     transform: translateY(200%);
     right: 100px;
+    cursor: pointer;
 }
