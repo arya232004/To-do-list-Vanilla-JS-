@@ -110,7 +110,6 @@ document.getElementById("menu").addEventListener("click", function() {
     }
 })
 
-/* let data = []; */
 
 const data = [{
     artist: 'Shawn Mendes',
@@ -263,8 +262,3 @@ function fetch() {
 }
 
 fetch();
-
-/* console.log(data); */
-/* document.getElementById("submit").addEventListener("click", function() {
-    document.getElementById("change").classList.add("dark-mode");
-}); */
