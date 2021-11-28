@@ -105,6 +105,15 @@ form {
     left: 90%;*/
 }
 
+@media (max-width: 500px) {
+    .players {
+        position: relative;
+        left: 80%;
+        top: 100px;
+        /* visibility: hidden;*/
+    }
+}
+
 .player {
     right: 10px;
     bottom: 110px;
