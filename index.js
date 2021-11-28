@@ -63,11 +63,7 @@ function lists() {
             divitem.appendChild(span);
             task.value = "";
             task.setAttribute("placeholder", 'Enter task');
-            //  exisistingdata.push(exisit);
         }
-        localStorage.setItem("taskarr", JSON.stringify(taskarr));
-        exisistingdata[0] = exisit;
-        localStorage.setItem("main", JSON.stringify(exisistingdata));
 
         digits++;
         total.innerHTML = digits;
