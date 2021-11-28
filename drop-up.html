@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <title>Document</title>
+    <link rel="stylesheet" href="drop.css">
+</head>
+
+<body>
+    <h1 class="challenge-title">Drop up</h1>
+    <h2 class="challenge-subtitle">#28ComponentsOfFebruaryDay7</h2>
+
+
+    <div class="container">
+        <div class="menu-container">
+            <div class="menu">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </div>
+            <button class="btn btn-circle btn-open">
+			<span class="sr-only">Open menu</span>
+			<div class="hamburger">
+				<span></span>
+			</div>
+			<div class="times"></div>
+		</button>
+        </div>
+    </div>
+    <script>
+        const openBtn = document.querySelector('.btn-open');
+        const menu = document.querySelector('.menu')
+
+        openBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            this.classList.toggle('open');
+            menu.classList.toggle('open');
+        })
+    </script>
+</body>
+
+</html>

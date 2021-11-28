@@ -10,102 +10,124 @@ function getdate() {
     return daynamexd + ", " + monthname + " " + day;
 }
 
-document.getElementById('heading').innerHTML = getdate();
+document.getElementById('heading').textContent = getdate();
 
-document.getElementById("submit").addEventListener("click", lists);
 
-let taskarr = [];
 let done = 0;
 let rem_task = 0;
 let digits = 0;
+i = 0;
+var exisit = [];
+var exisistingdata = JSON.parse(localStorage.getItem("main"));
+var exisit = JSON.parse(localStorage.getItem("taskarr"));
 
-function lists() {
 
-    var task = document.getElementById("num1");
-    taskarr.push(task);
-    var ul = document.getElementById("fields");
-    var li = document.createElement("p");
-    var ip = document.createElement("input");
-    var divitem = document.createElement("div");
-    var total = document.getElementById("total");
-    var donedom = document.getElementById("done");
-    var remaining = document.getElementById("remaining");
-    var span = document.createElement("span");
-    var icon = document.createElement("i");
 
-    for (i = 0; i < taskarr.length; i++) {
-
-        divitem.setAttribute("class", "item");
-        divitem.setAttribute("id", "removexdxdxd" + i);
-        ip.setAttribute("type", "checkbox");
-        divitem.appendChild(ip);
-        ip.setAttribute("class", i);
-        li.appendChild(document.createTextNode(taskarr[i].value));
-        divitem.appendChild(li);
-        ul.appendChild(divitem);
-        icon.setAttribute("class", "fas fa-times");
-        span.classList.add("closed");
-        span.appendChild(icon);
-        divitem.appendChild(span);
-        task.value = "";
-        task.setAttribute("placeholder", 'Enter task');
-    }
-    digits++;
-    total.innerHTML = digits;
-    icon.addEventListener("click", function() {
-
-        if (divitem.parentNode.removeChild(divitem)) {
-
-            digits--;
-            total.innerHTML = digits;
-
-            if (ip.checked == true) {
-                done--;
-                donedom.innerHTML = done;
-            } else if (ip.checked == false) {
-                rem_task--;
-                remaining.innerHTML = rem_task;
-            }
-        }
-    })
-
-    rem_task++;
-    remaining.innerHTML = rem_task;
-    ip.addEventListener("change", function() {
-
-        if (ip.checked == true) {
-            done++;
-            rem_task--;
-            remaining.innerHTML = rem_task;
-            donedom.innerHTML = done;
-
-            li.classList.add("checked");
-        } else if (ip.checked == false) {
-            done--;
-            rem_task++;
-            remaining.innerHTML = rem_task;
-            donedom.innerHTML = done;
-
-            li.classList.remove("checked");
-        }
-    })
-}
-
+document.getElementById("submit").addEventListener("click", lists);
 document.addEventListener("keydown", function(event) {
     if (event.key === 'Enter') {
         lists();
     }
 })
 
+
+function lists() {
+    var icon;
+    var task = document.getElementById("num1");
+    var tesing = document.getElementById("num1").value;
+
+    if (tesing !== "") {
+
+        taskarr.push(tesing);
+
+        var ul = document.getElementById("fields");
+        var li = document.createElement("p");
+        var ip = document.createElement("input");
+        var divitem = document.createElement("div");
+        var total = document.getElementById("total");
+        var donedom = document.getElementById("done");
+        var remaining = document.getElementById("remaining");
+        var span = document.createElement("span");
+        var icon = document.createElement("i");
+
+        for (i; i < taskarr.length; i++) {
+
+            divitem.setAttribute("class", "item");
+            divitem.setAttribute("id", "removexdxdxd" + i);
+            ip.setAttribute("type", "checkbox");
+            divitem.appendChild(ip);
+            ip.setAttribute("class", i);
+            li.appendChild(document.createTextNode(taskarr[i]));
+            divitem.appendChild(li);
+            ul.appendChild(divitem);
+            icon.setAttribute("class", "fas fa-times");
+            span.classList.add("closed");
+            span.appendChild(icon);
+            divitem.appendChild(span);
+            task.value = "";
+            task.setAttribute("placeholder", 'Enter task');
+            //  exisistingdata.push(exisit);
+        }
+        localStorage.setItem("taskarr", JSON.stringify(taskarr));
+        exisistingdata[0] = exisit;
+        localStorage.setItem("main", JSON.stringify(exisistingdata));
+
+
+        digits++;
+        total.innerHTML = digits;
+        icon.addEventListener("click", function() {
+            if (divitem.parentNode.removeChild(divitem)) {
+
+                digits--;
+                total.innerHTML = digits;
+                for (i = 0; i < exisit.length.length; i++) {
+                    console.log(exisit.indexOf(i));
+                }
+                if (ip.checked == true) {
+                    done--;
+                    donedom.innerHTML = done;
+                } else if (ip.checked == false) {
+                    rem_task--;
+                    remaining.innerHTML = rem_task;
+                }
+            }
+        })
+
+
+        rem_task++;
+        remaining.innerHTML = rem_task;
+        ip.addEventListener("change", function() {
+
+            if (ip.checked == true) {
+                done++;
+                rem_task--;
+                remaining.innerHTML = rem_task;
+                donedom.innerHTML = done;
+
+                li.classList.add("checked");
+            } else if (ip.checked == false) {
+                done--;
+                rem_task++;
+                remaining.innerHTML = rem_task;
+                donedom.innerHTML = done;
+
+                li.classList.remove("checked");
+            }
+        })
+    } else {
+        alert("Please enter a task");
+    }
+}
+
 var transparency = true;
 document.getElementById("menu").addEventListener("click", function() {
     if (transparency === true) {
-        document.getElementById("player").style.opacity = 1;
         document.getElementById("player").style.transition = "all 1s";
+        document.getElementById("player").style.visibility = "visible";
         transparency = false
     } else if (transparency === false) {
-        document.getElementById("player").style.opacity = 0;
         document.getElementById("player").style.transition = "all 1s";
+        document.getElementById("player").style.visibility = "hidden";
         transparency = true;
     }
 })
@@ -231,7 +253,7 @@ function fetch() {
         dynamic.style.backgroundImage = data[i].backgroundimage;
 
         player.appendChild(dynamic);
-        console.log(i);
+        // console.log(i);
 
         dynamicplay.addEventListener("click", function() {
             domsong = this.firstChild;
@@ -240,7 +262,7 @@ function fetch() {
                 this.classList.remove('fas', 'fa-pause');
                 this.classList.add('fas', 'fa-play');
             } else {
-                console.log(domsong);
+                //  console.log(domsong);
                 domsong.play();
                 this.classList.remove('fas', 'fa-play');
                 this.classList.add('fas', 'fa-pause');
@@ -261,4 +283,4 @@ function fetch() {
     }
 }
 
-fetch();
+document.addEventListener("DOMContentLoaded", fetch);

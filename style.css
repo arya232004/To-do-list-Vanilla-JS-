@@ -1,9 +1,13 @@
 html {
-    background-color: #E4E9FD;
+    background-color: #E4E9FD !important;
     /*  background-color: #111927; */
-    background-image: -webkit-linear-gradient(65deg, #A683E3 50%, #E4E9FD 50%);
+    background-image: -webkit-linear-gradient(65deg, #A683E3 50%, #E4E9FD 50%) !important;
     min-height: 1000px;
     font-family: 'helvetica neue';
+}
+
+.players[open] .adjust {
+    animation-name: menuAnim;
 }
 
 h1 {
@@ -103,7 +107,7 @@ form {
     background-color: white;
     width: 400px;
     position: absolute;
-    opacity: 0;
+    visibility: hidden;
 }
 
 input[type="text"] {
@@ -228,12 +232,16 @@ footer {
     position: relative;
     bottom: 10px;
     margin-left: 5px;
+    font-size: 15px;
+    /*font-weight: bold;*/
 }
 
 .artistname {
     position: relative;
     bottom: 18px;
     margin-left: 5px;
+    font-size: 15px;
+    /*font-weight: bold;*/
 }
 
 .reverse {
@@ -241,4 +249,141 @@ footer {
     transform: translateY(200%);
     right: 100px;
     cursor: pointer;
+}
+
+details {
+    margin: 40px;
+}
+
+summary {
+    writing-mode: vertical-lr;
+    text-align: center;
+    padding: 12px 10px;
+    width: 23px;
+    height: 17px;
+    background-color: var(--primColor);
+    border: 2px solid var(--secoColor);
+    border-radius: var(--cornerRad);
+    color: var(--secoColor);
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    transition: transform 200ms ease-in-out 0s;
+}
+
+summary::before,
+summary::after {
+    position: static;
+    top: 0;
+    left: 0;
+}
+
+summary::before {
+    content: "";
+}
+
+summary::after {
+    content: "III";
+    letter-spacing: -1px;
+}
+
+summary:hover {
+    transform: scale(1.1);
+}
+
+summary::marker {
+    font-size: 0;
+}
+
+summary::-webkit-details-marker {
+    display: none;
+}
+
+details[open] .menu {
+    animation-name: menuAnim;
+}
+
+details[open] summary::before {
+    content: "X";
+}
+
+details[open] summary::after {
+    content: "";
+}
+
+.menu {
+    height: 0;
+    width: fit-content;
+    border-radius: var(--cornerRad);
+    background-color: var(--primColor);
+    box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.2);
+    margin-top: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    animation: closeMenu 300ms ease-in-out forwards;
+}
+
+.menu a {
+    padding: 12px 24px;
+    margin: 0 16px;
+    color: var(--secoColor);
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+    text-decoration: none;
+    text-align: center;
+    transition: filter 200ms linear 0s;
+}
+
+.menu a:nth-of-type(1) {
+    padding-top: 24px;
+}
+
+.menu a:nth-last-of-type(1) {
+    border-bottom: none;
+}
+
+.menu a:hover {
+    filter: brightness(200%);
+}
+
+details::before {
+    content: "← Click This Button";
+    color: var(--secoColor);
+    position: absolute;
+    margin-left: 80px;
+    padding: 10px 10px;
+    opacity: 0.4;
+}
+
+details[open]::before {
+    animation: fadeMe 300ms linear forwards;
+}
+
+@keyframes menuAnim {
+    0% {
+        height: 0;
+    }
+    100% {
+        height: 312px;
+    }
+}
+
+@keyframes fadeMe {
+    0% {
+        opacity: 0.4;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+:root {
+    --primColor: #dcdcdc;
+    --secoColor: #555555;
+    --cornerRad: 4px;
+}
+
+#round-btn {
+    width: 50px;
 }
