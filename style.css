@@ -98,6 +98,11 @@ form {
     background-color: #A683E3;
     width: 90px;
     bottom: 45px;
+    position: absolute;
+    right: 90px;
+    /* position: relative;
+    top: 300px;
+    left: 90%;*/
 }
 
 .player {

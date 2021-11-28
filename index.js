@@ -17,6 +17,7 @@ let done = 0;
 let rem_task = 0;
 let digits = 0;
 i = 0;
+let taskarr = [];
 var exisit = [];
 var exisistingdata = JSON.parse(localStorage.getItem("main"));
 var exisit = JSON.parse(localStorage.getItem("taskarr"));
