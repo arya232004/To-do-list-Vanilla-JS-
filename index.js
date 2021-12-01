@@ -320,18 +320,20 @@ function weather() {
             const curr = (JSON.parse(this.responseText));
             if (this.readyState === this.DONE) {
                 console.log(this.responseText);
+                if (imagemai.getAttribute("src") === "undefined") {
+                    retrive();
+                }
                 imagemai.setAttribute("src", curr.weather[0].icon);
                 tempreature.innerHTML = Math.round(curr.main.temp * 9 / 5 + 32) + "°C";
                 description.innerHTML = curr.weather[0].description;
                 humidity.innerHTML = curr.main.humidity + "%";
                 feelslike.innerHTML = Math.round(curr.main.feels_like * 9 / 5 + 32) + "°C";
+
             }
         });
     });
 }
 
 
-if (imagemai.getAttribute("src") === "undefined") {
-    retrive();
-}
+
 weather();

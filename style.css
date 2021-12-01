@@ -34,6 +34,10 @@ h1 {
     border: 1px solid rgba( 255, 255, 255, 0.18);
 }
 
+.titlefortemp {
+    font-weight: bold;
+}
+
 .weather {
     max-width: 600px;
     margin-bottom: 10px;
