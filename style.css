@@ -25,6 +25,28 @@ h1 {
     position: relative;
 }
 
+.line {
+    background: rgba( 255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37);
+    backdrop-filter: blur( 2px);
+    -webkit-backdrop-filter: blur( 2px);
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18);
+}
+
+.weather {
+    max-width: 600px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    position: absolute;
+    background: rgba( 255, 255, 255, 0.25);
+    box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37);
+    backdrop-filter: blur( 2px);
+    -webkit-backdrop-filter: blur( 2px);
+    border-radius: 10px;
+    border: 1px solid rgba( 255, 255, 255, 0.18);
+}
+
 .fields {
     max-width: 400px;
     margin: 30px auto;
@@ -116,8 +138,8 @@ form {
 
 .player {
     right: 10px;
-    bottom: 110px;
-    height: 550px;
+    bottom: 140px;
+    height: 500px;
     background-color: white;
     width: 400px;
     position: absolute;

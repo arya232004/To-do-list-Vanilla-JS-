@@ -12,7 +12,6 @@ function getdate() {
 
 document.getElementById('heading').textContent = getdate();
 
-
 let done = 0;
 let rem_task = 0;
 let digits = 0;
@@ -27,6 +26,32 @@ document.addEventListener("keydown", function(event) {
     }
 })
 
+let time = new Date();
+let hour = time.getHours();
+console.log(hour);
+
+if (hour >= 0 && hour < 12) {
+    swal({
+        title: "Good Morning!",
+        text: "Have a great day ahead",
+        icon: "success",
+        button: "Okay",
+    });
+} else if (hour >= 12 && hour < 18) {
+    swal({
+        title: "Good Afternoon!",
+        text: "Let's Go",
+        icon: "success",
+        button: "Okay",
+    });
+} else {
+    swal({
+        title: "Good Evening!",
+        text: "End the day by completing all your task",
+        icon: "success",
+        button: "Okay",
+    });
+}
 
 function lists() {
     var icon;
@@ -94,19 +119,22 @@ function lists() {
                 rem_task--;
                 remaining.innerHTML = rem_task;
                 donedom.innerHTML = done;
-
                 li.classList.add("checked");
             } else if (ip.checked == false) {
                 done--;
                 rem_task++;
                 remaining.innerHTML = rem_task;
                 donedom.innerHTML = done;
-
                 li.classList.remove("checked");
             }
         })
     } else {
-        alert("Please enter a task");
+        swal({
+            title: "Plese enter task!",
+            text: "Taks cannot be empty",
+            icon: "warning",
+            button: "Okay",
+        });
     }
 }
 
@@ -199,11 +227,9 @@ function fetch() {
         let audioplaying = false;
         var songitems = document.getElementById("player");
 
-
         dynamicimg.setAttribute("src", data[i].songimg);
         dynamicimg.classList.add("imgmani");
         dynamic.appendChild(dynamicimg);
-
 
         dynamicsongname.appendChild(document.createTextNode(data[i].songname));
         dynamic.appendChild(dynamicsongname);
@@ -272,3 +298,40 @@ function fetch() {
 }
 
 document.addEventListener("DOMContentLoaded", fetch);
+
+var imagemai = document.getElementById("climate");
+var tempreature = document.getElementById("temp");
+var description = document.getElementById("decr");
+var humidity = document.getElementById("humidity");
+var feelslike = document.getElementById("Feellike");
+
+function weather() {
+    var lat;
+    var long;
+    navigator.geolocation.getCurrentPosition(function(position) {
+        lat = position.coords.latitude;
+        long = position.coords.longitude;
+        console.log(lat, long);
+        var oReq = new XMLHttpRequest();
+        oReq.open("GET", "https://fcc-weather-api.glitch.me/api/current?lat=" + lat + "&lon=" + long);
+        oReq.send();
+
+        oReq.addEventListener("readystatechange", function retrive() {
+            const curr = (JSON.parse(this.responseText));
+            if (this.readyState === this.DONE) {
+                console.log(this.responseText);
+                imagemai.setAttribute("src", curr.weather[0].icon);
+                tempreature.innerHTML = Math.round(curr.main.temp * 9 / 5 + 32) + "°C";
+                description.innerHTML = curr.weather[0].description;
+                humidity.innerHTML = curr.main.humidity + "%";
+                feelslike.innerHTML = Math.round(curr.main.feels_like * 9 / 5 + 32) + "°C";
+            }
+        });
+    });
+}
+
+
+if (imagemai.getAttribute("src") === "undefined") {
+    retrive();
+}
+weather();

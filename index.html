@@ -13,7 +13,30 @@
 </head>
 
 <body id="change">
+    <div class="weather" style=" height: 270px; width: 200px;">
 
+        <img id="climate" style="margin-left: 60px;">
+        <hr>
+        <div style="  height: 70%; position: absolute; left: 45%;" class="line"> </div>
+        <div>
+            <p style="margin-left: 20px;">Temp</p>
+            <p id="temp" style="display: inline; margin-left: 20px;"></p>
+        </div>
+
+        <div style="position: absolute; left: 50%; top: 24%; display: block; margin-bottom: 40px;">
+            <p>Description</p>
+            <p id="decr"></p>
+        </div>
+        <hr>
+        <div>
+            <p style="margin-left: 15px;">Humidity</p>
+            <p id="humidity" style="display: inline; margin-left: 20px;"></p>
+        </div>
+        <div style="position: absolute; left: 50%; top: 53%; display: block; margin-bottom: 40px;">
+            <p style="margin-left: 15px;">Feels Like</p>
+            <p id="Feellike" style="display: inline; margin-left: 20px;"></p>
+        </div>
+    </div>
     <div class="box1">
         <h1 id='heading'>xdxdxdxd</h1>
     </div>
@@ -48,11 +71,10 @@
     </div>
     <div class="player adjust" id="player">
 
+
     </div>
     <button class="players" id="menu" type="button"><img src="music.png"  id="round-btn" alt="no"></button>
-
-
-    <script src="login.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="index.js"></script>
 </body>
 
