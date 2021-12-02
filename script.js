@@ -335,7 +335,9 @@ function weather() {
             if (this.readyState === this.DONE) {
                 console.log(this.responseText);
                 if (imagemai.getAttribute("src") === "undefined") {
-                    setInterval(100, retrive);
+                    console.log(imagemai.getAttribute("src"));
+                    console.log("undefined");
+                    setInterval(1, retrive);
                 }
                 imagemai.setAttribute("src", curr.weather[0].icon);
                 tempreature.innerHTML = Math.round(curr.main.temp) + "°C";
