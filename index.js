@@ -53,24 +53,36 @@ if (hour >= 0 && hour < 12) {
     });
 }
 
+
+
 function lists() {
     var icon;
     var task = document.getElementById("num1");
     var tesing = document.getElementById("num1").value;
+    var ul;
+    var li;
+    var ip;
+    var divitem;
+    var total;
+    var donedom;
+    var remaining;
+    var span;
+    var icon;
+
 
     if (tesing !== "") {
 
         taskarr.push(tesing);
 
-        var ul = document.getElementById("fields");
-        var li = document.createElement("p");
-        var ip = document.createElement("input");
-        var divitem = document.createElement("div");
-        var total = document.getElementById("total");
-        var donedom = document.getElementById("done");
-        var remaining = document.getElementById("remaining");
-        var span = document.createElement("span");
-        var icon = document.createElement("i");
+        ul = document.getElementById("fields");
+        li = document.createElement("p");
+        ip = document.createElement("input");
+        divitem = document.createElement("div");
+        total = document.getElementById("total");
+        donedom = document.getElementById("done");
+        remaining = document.getElementById("remaining");
+        span = document.createElement("span");
+        icon = document.createElement("i");
 
         for (i; i < taskarr.length; i++) {
 
@@ -137,6 +149,8 @@ function lists() {
         });
     }
 }
+
+
 
 var transparency = true;
 document.getElementById("menu").addEventListener("click", function() {
@@ -321,13 +335,13 @@ function weather() {
             if (this.readyState === this.DONE) {
                 console.log(this.responseText);
                 if (imagemai.getAttribute("src") === "undefined") {
-                    retrive();
+                    setInterval(100, retrive);
                 }
                 imagemai.setAttribute("src", curr.weather[0].icon);
-                tempreature.innerHTML = Math.round(curr.main.temp * 9 / 5 + 32) + "°C";
+                tempreature.innerHTML = Math.round(curr.main.temp) + "°C";
                 description.innerHTML = curr.weather[0].description;
                 humidity.innerHTML = curr.main.humidity + "%";
-                feelslike.innerHTML = Math.round(curr.main.feels_like * 9 / 5 + 32) + "°C";
+                feelslike.innerHTML = Math.round(curr.main.feels_like) + "°C";
 
             }
         });
@@ -335,5 +349,4 @@ function weather() {
 }
 
 
-
-weather();
+document.addEventListener("DOMContentLoaded", weather);
