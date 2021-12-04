@@ -142,7 +142,7 @@ function lists() {
         })
     } else {
         swal({
-            title: "Plese enter task!",
+            title: "Please enter task!",
             text: "Task cannot be empty",
             icon: "warning",
             button: "Okay",
