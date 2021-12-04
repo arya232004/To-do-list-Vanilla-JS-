@@ -30,14 +30,14 @@ let time = new Date();
 let hour = time.getHours();
 console.log(hour);
 
-if (hour >= 0 && hour < 12) {
+if (hour >= 5 && hour < 12) {
     swal({
         title: "Good Morning!",
         text: "Have a great day ahead",
         icon: "success",
         button: "Okay",
     });
-} else if (hour >= 12 && hour < 18) {
+} else if (hour >= 12 && hour < 17) {
     swal({
         title: "Good Afternoon!",
         text: "Let's Go",
