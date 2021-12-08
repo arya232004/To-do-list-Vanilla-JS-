@@ -150,8 +150,6 @@ function lists() {
     }
 }
 
-
-
 var transparency = true;
 document.getElementById("menu").addEventListener("click", function() {
     if (transparency === true) {
@@ -286,6 +284,7 @@ function fetch() {
 
         dynamicplay.addEventListener("click", function() {
             domsong = this.firstChild;
+            console.log(domsong);
             if (audioplaying === true) {
                 domsong.pause();
                 this.classList.remove('fas', 'fa-pause');
@@ -349,6 +348,5 @@ function weather() {
         });
     });
 }
-
 
 document.addEventListener("DOMContentLoaded", weather);
