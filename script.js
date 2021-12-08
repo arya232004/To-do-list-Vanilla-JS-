@@ -25,7 +25,6 @@ document.addEventListener("keydown", function(event) {
         lists();
     }
 })
-
 let time = new Date();
 let hour = time.getHours();
 console.log(hour);
@@ -53,8 +52,6 @@ if (hour >= 5 && hour < 12) {
     });
 }
 
-
-
 function lists() {
     var icon;
     var task = document.getElementById("num1");
@@ -69,9 +66,7 @@ function lists() {
     var span;
     var icon;
 
-
     if (tesing !== "") {
-
         taskarr.push(tesing);
 
         ul = document.getElementById("fields");
@@ -85,13 +80,14 @@ function lists() {
         icon = document.createElement("i");
 
         for (i; i < taskarr.length; i++) {
-
-            divitem.setAttribute("class", "item");
-            divitem.setAttribute("id", "removexdxdxd" + i);
+            divitem.classList.add("item");
+            divitem.classList.add(i);
+            divitem.setAttribute("id", "key");
+            divitem.setAttribute("name", "key" + i);
             ip.setAttribute("type", "checkbox");
             divitem.appendChild(ip);
             ip.setAttribute("class", i);
-            li.appendChild(document.createTextNode(taskarr[i]));
+            li.textContent = taskarr[i];
             divitem.appendChild(li);
             ul.appendChild(divitem);
             icon.setAttribute("class", "fas fa-times");
@@ -100,32 +96,32 @@ function lists() {
             divitem.appendChild(span);
             task.value = "";
             task.setAttribute("placeholder", 'Enter task');
+            console.log(taskarr[i]);
         }
-
         digits++;
         total.innerHTML = digits;
         icon.addEventListener("click", function() {
-            if (divitem.parentNode.removeChild(divitem)) {
-
-                digits--;
-                total.innerHTML = digits;
-                for (i = 0; i < exisit.length.length; i++) {
-                    console.log(exisit.indexOf(i));
-                }
-                if (ip.checked == true) {
-                    done--;
-                    donedom.innerHTML = done;
-                } else if (ip.checked == false) {
-                    rem_task--;
-                    remaining.innerHTML = rem_task;
-                }
+            var removekey = document.getElementById("key");
+            var removeint = parseInt(removekey.className.slice(5, 6));
+            divitem.parentNode.removeChild(divitem)
+            taskarr.pop(removeint);
+            digits--;
+            total.innerHTML = digits;
+            for (i = 0; i < exisit.length.length; i++) {
+                console.log(exisit.indexOf(i));
             }
-        })
+            if (ip.checked == true) {
+                done--;
+                donedom.innerHTML = done;
+            } else if (ip.checked == false) {
+                rem_task--;
+                remaining.innerHTML = rem_task;
+            }
 
+        })
         rem_task++;
         remaining.innerHTML = rem_task;
         ip.addEventListener("change", function() {
-
             if (ip.checked == true) {
                 done++;
                 rem_task--;
@@ -294,7 +290,6 @@ function fetch() {
                 this.classList.remove('fas', 'fa-play');
                 this.classList.add('fas', 'fa-pause');
             }
-
             domsong.onplaying = function() {
                 audioplaying = true;
             };
@@ -302,14 +297,19 @@ function fetch() {
                 audioplaying = false;
             };
         })
-
         dynamicrevers.addEventListener("click", function() {
+            if (audioplaying == false) {
+                swal({
+                    title: "Please Play the song first",
+                    text: "No song found",
+                    icon: "warning",
+                    button: "Okay",
+                });
+            }
             domsong.currentTime = 0;
-
         })
     }
 }
-
 document.addEventListener("DOMContentLoaded", fetch);
 
 var imagemai = document.getElementById("climate");
@@ -328,7 +328,6 @@ function weather() {
         var oReq = new XMLHttpRequest();
         oReq.open("GET", "https://fcc-weather-api.glitch.me/api/current?lat=" + lat + "&lon=" + long);
         oReq.send();
-
         oReq.addEventListener("readystatechange", function retrive() {
             const curr = (JSON.parse(this.responseText));
             if (this.readyState === this.DONE) {
@@ -341,10 +340,8 @@ function weather() {
                 description.innerHTML = curr.weather[0].description;
                 humidity.innerHTML = curr.main.humidity + "%";
                 feelslike.innerHTML = Math.round(curr.main.feels_like) + "°C";
-
             }
         });
     });
 }
-
 document.addEventListener("DOMContentLoaded", weather);
