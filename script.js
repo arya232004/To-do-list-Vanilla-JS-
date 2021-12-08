@@ -333,9 +333,7 @@ function weather() {
             const curr = (JSON.parse(this.responseText));
             if (this.readyState === this.DONE) {
                 console.log(this.responseText);
-                if (imagemai.getAttribute("src") === "undefined") {
-                    console.log(imagemai.getAttribute("src"));
-                    console.log("undefined");
+                if (imagemai.src = "undefined") {
                     setInterval(1, retrive);
                 }
                 imagemai.setAttribute("src", curr.weather[0].icon);
