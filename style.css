@@ -427,3 +427,9 @@ details[open]::before {
 #round-btn {
     width: 50px;
 }
+
+.timer {
+    position: absolute;
+    transform: translateX(1900%);
+    cursor: pointer;
+}
