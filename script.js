@@ -84,7 +84,6 @@ function lists() {
         for (i; i < taskarr.length; i++) {
             divitem.classList.add("item");
             divitem.classList.add(i);
-            //divitem.setAttribute("value", tasktime);
             divitem.setAttribute("arrivaltime", tasktime.getTime());
             divitem.setAttribute("id", "key");
             divitem.setAttribute("name", "key" + i);
