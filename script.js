@@ -368,4 +368,3 @@ function weather() {
     });
 }
 document.addEventListener("DOMContentLoaded", weather);
-setInterval(weather, 60 * 60 * 1000);
