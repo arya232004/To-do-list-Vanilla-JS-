@@ -17,7 +17,7 @@ let rem_task = 0;
 let digits = 0;
 i = 0;
 let taskarr = [];
-var exisit = [];
+let timetask = [];
 
 document.getElementById("submit").addEventListener("click", lists);
 document.addEventListener("keydown", function(event) {
@@ -56,6 +56,7 @@ function lists() {
     var icon;
     var task = document.getElementById("num1");
     var tesing = document.getElementById("num1").value;
+    var tasktime = new Date();
     var ul;
     var li;
     var ip;
@@ -65,7 +66,7 @@ function lists() {
     var remaining;
     var span;
     var icon;
-
+    var timericon;
     if (tesing !== "") {
         taskarr.push(tesing);
 
@@ -78,10 +79,13 @@ function lists() {
         remaining = document.getElementById("remaining");
         span = document.createElement("span");
         icon = document.createElement("i");
+        timericon = document.createElement("i");
 
         for (i; i < taskarr.length; i++) {
             divitem.classList.add("item");
             divitem.classList.add(i);
+            //divitem.setAttribute("value", tasktime);
+            divitem.setAttribute("arrivaltime", tasktime.getTime());
             divitem.setAttribute("id", "key");
             divitem.setAttribute("name", "key" + i);
             ip.setAttribute("type", "checkbox");
@@ -94,12 +98,36 @@ function lists() {
             span.classList.add("closed");
             span.appendChild(icon);
             divitem.appendChild(span);
+            timericon.setAttribute("class", "far fa-clock");
+            timericon.classList.add("timer");
+            divitem.appendChild(timericon);
             task.value = "";
             task.setAttribute("placeholder", 'Enter task');
             console.log(taskarr[i]);
         }
         digits++;
         total.innerHTML = digits;
+        timericon.addEventListener("click", function() {
+            var input = parseInt(prompt("Enter the time in Minutes at what you want to complete the task"));
+            tasktime.setMinutes(new Date().getMinutes() + input);
+            this.parentElement.setAttribute("deadline", tasktime.getTime());
+            console.log(tasktime.getTime());
+            setInterval(function() {
+                var taskobjects = document.getElementsByClassName("item");
+                for (i = 0; i < taskobjects.length; i++) {
+                    if (taskobjects[i].hasAttribute("deadline")) {
+                        var deadline = taskobjects[i].getAttribute("deadline");
+                        if (deadline < new Date().getTime() && taskobjects[i].children[0].checked == false) {
+                            taskobjects[i].style.backgroundColor = "#488B95";
+                        } else if (taskobjects[i].children[0].checked == true) {
+                            taskobjects[i].style.backgroundColor = "white";
+                        } else {
+                            taskobjects[i].style.backgroundColor = "white";
+                        }
+                    }
+                }
+            }, 1000);
+        });
         icon.addEventListener("click", function() {
             var removekey = document.getElementById("key");
             var removeint = parseInt(removekey.className.slice(5, 6));
@@ -107,9 +135,6 @@ function lists() {
             taskarr.pop(removeint);
             digits--;
             total.innerHTML = digits;
-            for (i = 0; i < exisit.length.length; i++) {
-                console.log(exisit.indexOf(i));
-            }
             if (ip.checked == true) {
                 done--;
                 donedom.innerHTML = done;
@@ -117,7 +142,6 @@ function lists() {
                 rem_task--;
                 remaining.innerHTML = rem_task;
             }
-
         })
         rem_task++;
         remaining.innerHTML = rem_task;
@@ -345,3 +369,4 @@ function weather() {
     });
 }
 document.addEventListener("DOMContentLoaded", weather);
+setInterval(weather, 60 * 60 * 1000);
