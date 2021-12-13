@@ -79,6 +79,7 @@ h1 {
 input:checked+p {
     text-decoration: line-through;
     text-decoration-color: #A683E3;
+    font-style: italic;
 }
 
 input[type="checkbox"] {
@@ -214,9 +215,11 @@ footer {
     font-family: 'Noto Sans', sans-serif;
 }
 
-.checked {
+
+/* .checked {
     font-style: italic;
 }
+ */
 
 .dark-mode {
     background-color: black;

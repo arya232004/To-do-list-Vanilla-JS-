@@ -17,7 +17,9 @@ let rem_task = 0;
 let digits = 0;
 i = 0;
 let taskarr = [];
-let timetask = [];
+var statusofitems = [];
+var arrivaltimearr = [];
+var deadlinetime = [];
 
 document.getElementById("submit").addEventListener("click", lists);
 document.addEventListener("keydown", function(event) {
@@ -51,31 +53,30 @@ if (hour >= 5 && hour < 12) {
         button: "Okay",
     });
 }
+var donedom = document.getElementById("done");
 
 function lists() {
-    var icon;
+    let rem_count = 0;
     var task = document.getElementById("num1");
-    var tesing = document.getElementById("num1").value;
-    var tasktime = new Date();
+    var testing = document.getElementById("num1").value;
     var ul;
     var li;
     var ip;
     var divitem;
     var total;
-    var donedom;
     var remaining;
     var span;
-    var icon;
+    var tasktime = new Date();
     var timericon;
-    if (tesing !== "") {
-        taskarr.push(tesing);
+    var icon;
 
+    if (testing !== "") {
+        taskarr.push(testing);
         ul = document.getElementById("fields");
         li = document.createElement("p");
         ip = document.createElement("input");
         divitem = document.createElement("div");
         total = document.getElementById("total");
-        donedom = document.getElementById("done");
         remaining = document.getElementById("remaining");
         span = document.createElement("span");
         icon = document.createElement("i");
@@ -84,10 +85,10 @@ function lists() {
         for (i; i < taskarr.length; i++) {
             divitem.classList.add("item");
             divitem.classList.add(i);
-            divitem.setAttribute("arrivaltime", tasktime.getTime());
             divitem.setAttribute("id", "key");
             divitem.setAttribute("name", "key" + i);
             ip.setAttribute("type", "checkbox");
+            ip.setAttribute("id", "unchecked" + i);
             divitem.appendChild(ip);
             ip.setAttribute("class", i);
             li.textContent = taskarr[i];
@@ -100,16 +101,79 @@ function lists() {
             timericon.setAttribute("class", "far fa-clock");
             timericon.classList.add("timer");
             divitem.appendChild(timericon);
+            divitem.setAttribute("arrivaltime", tasktime.getTime());
             task.value = "";
             task.setAttribute("placeholder", 'Enter task');
             console.log(taskarr[i]);
         }
-        digits++;
-        total.innerHTML = digits;
+
+        statusofitems.push(Boolean(false));
+        console.log("Arrival time array at index " + i);
+        arrivaltimearr.push(tasktime.getTime());
+        console.log(arrivaltimearr);
+        deadlinetime.push('NULL');
+        console.log("Deadline array: " + deadlinetime);
+
+        localStorage.setItem("arrivaltask", JSON.stringify(arrivaltimearr));
+        localStorage.setItem("deadlineoftask", JSON.stringify(deadlinetime));
+
+        console.log("Checking if false added " + statusofitems);
+        console.log(taskarr);
+        localStorage.setItem("alltask", JSON.stringify(taskarr));
+        console.log(document.getElementsByClassName("item"));
+        digits = document.getElementsByClassName("item").length;
+        total.innerHTML = digits
+        donedom.innerHTML = document.querySelectorAll('input[type="checkbox"]:checked').length;
+        rem_count = digits - donedom.innerHTML;
+        remaining.textContent = rem_count;
+
+        icon.addEventListener("click", function removeelemnt() {
+            var removekey = this.parentElement.parentElement;
+            var removeint = parseInt(removekey.className.slice(5, 6));
+            taskarr.splice(removeint, 1);
+            statusofitems.splice(removeint, 1);
+
+            arrivaltimearr.splice(removeint, 1);
+            deadlinetime.splice(removeint, 1);
+            console.log(deadlinetime);
+
+            console.log(removekey);
+            console.log(removeint);
+            removekey.remove();
+            total.innerHTML = document.getElementsByClassName("item").length;
+            donedom.innerHTML = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            rem_count = total.innerHTML - donedom.innerHTML;
+            remaining.textContent = rem_count;
+            testingfornow = Number(this.parentElement.parentElement.classList[1]);
+            console.log(divitem.classList[1]);
+            console.log("span :" + this.parentElement);
+            let a = document.getElementsByClassName("item");
+
+            console.log("index of deleted element :" + removeint);
+            if (!(removeint == a.length)) {
+                for (i = removeint; i < a.length; i++) {
+                    console.log(a[i].classList[1]);
+                    a[i].classList.add(i);
+                    a[i].classList.remove(i + 1);
+                    console.log(a[i].classList[1]);
+                    total.innerHTML = document.getElementsByClassName("item").length;
+                    donedom.innerHTML = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                    rem_count = total.innerHTML - donedom.innerHTML;
+                    remaining.textContent = rem_count;
+                }
+            }
+            localStorage.setItem("check", JSON.stringify(statusofitems));
+            localStorage.setItem("alltask", JSON.stringify(taskarr));
+
+            localStorage.setItem("arrivaltask", JSON.stringify(arrivaltimearr));
+            localStorage.setItem("deadlineoftask", JSON.stringify(deadlinetime));
+        })
         timericon.addEventListener("click", function() {
             var input = parseInt(prompt("Enter the time in Minutes at what you want to complete the task"));
             tasktime.setMinutes(new Date().getMinutes() + input);
             this.parentElement.setAttribute("deadline", tasktime.getTime());
+            deadlinetime[this.parentElement.classList[1]] = tasktime.getTime();
+            localStorage.setItem("deadlineoftask", JSON.stringify(deadlinetime));
             console.log(tasktime.getTime());
             setInterval(function() {
                 var taskobjects = document.getElementsByClassName("item");
@@ -127,38 +191,42 @@ function lists() {
                 }
             }, 1000);
         });
-        icon.addEventListener("click", function() {
-            var removekey = document.getElementById("key");
-            var removeint = parseInt(removekey.className.slice(5, 6));
-            divitem.parentNode.removeChild(divitem)
-            taskarr.pop(removeint);
-            digits--;
-            total.innerHTML = digits;
-            if (ip.checked == true) {
-                done--;
-                donedom.innerHTML = done;
-            } else if (ip.checked == false) {
-                rem_task--;
-                remaining.innerHTML = rem_task;
-            }
-        })
-        rem_task++;
-        remaining.innerHTML = rem_task;
-        ip.addEventListener("change", function() {
-            if (ip.checked == true) {
-                done++;
-                rem_task--;
-                remaining.innerHTML = rem_task;
-                donedom.innerHTML = done;
+
+        ip.addEventListener("change", function checkelement() {
+            var getclass = this.parentElement.className.slice(5, 6);
+            console.log("List inside ip.addEvent: " + getclass);
+            if (this.checked == true) {
+                total.innerHTML = document.getElementsByClassName("item").length;
+                donedom.innerHTML = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                rem_count = total.innerHTML - donedom.innerHTML;
+                remaining.textContent = rem_count;
+                this.setAttribute("id", "checked" + i);
                 li.classList.add("checked");
-            } else if (ip.checked == false) {
-                done--;
-                rem_task++;
-                remaining.innerHTML = rem_task;
-                donedom.innerHTML = done;
+
+            } else if (this.checked == false) {
+                total.innerHTML = document.getElementsByClassName("item").length;
+                donedom.innerHTML = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                rem_count = total.innerHTML - donedom.innerHTML;
+                remaining.textContent = rem_count;
+                console.log("List inside ip.addEvent list (false): " + statusofitems);
+                statusofitems[getclass] = ip.checked.toString();
+                this.setAttribute("id", "unchecked" + i);
                 li.classList.remove("checked");
             }
-        })
+            console.log("List inside ip.addEvent list (true): " + statusofitems);
+            statusofitems[getclass] = this.checked;
+            console.log("Lists: " + statusofitems);
+            localStorage.setItem("check", JSON.stringify(statusofitems));
+            var interval = setInterval(function() {
+                var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+                if (checkboxes && document.getElementById("remaining").innerHTML == 0) {
+                    confetiii();
+                    clearInterval(interval);
+                }
+
+            }, 1000);
+            interval;
+        });
     } else {
         swal({
             title: "Please enter task!",
@@ -168,6 +236,248 @@ function lists() {
         });
     }
 }
+
+function doconload() {
+    let rem_count = 0;
+    var loading = JSON.parse(localStorage.getItem("alltask"));
+    var taskstatus = JSON.parse(localStorage.getItem("check"));
+    var arrivaltask = JSON.parse(localStorage.getItem("arrivaltask"));
+    var deadline = JSON.parse(localStorage.getItem("deadlineoftask"));
+    for (i = 0; i < loading.length; i++) {
+        taskarr[i] = loading[i];
+    }
+    for (i = 0; i < taskstatus.length; i++) {
+        statusofitems.push(taskstatus[i]);
+    }
+    for (i = 0; i < arrivaltask.length; i++) {
+        arrivaltimearr[i] = arrivaltask[i];
+    }
+    for (i = 0; i < deadline.length; i++) {
+        deadlinetime.push(deadline[i]);
+    }
+    console.log("Task array onload: " + taskarr);
+    console.log("Status of items onload: " + statusofitems);
+    console.log("Arrival time array onload: " + arrivaltimearr);
+    console.log("Deadline array onload: " + deadlinetime);
+
+    var divitem;
+    var total = document.getElementById("total");
+    var donedom = document.getElementById("done");
+    var remaining = document.getElementById("remaining");
+    for (i = 0; i < taskarr.length; i++) {
+        console.log(taskarr[i]);
+        var ul = document.getElementById("fields");
+        var li = document.createElement("p");
+        var ip = document.createElement("input");
+        divitem = document.createElement("div");
+        var span = document.createElement("span");
+        var icon = document.createElement("i");
+        var tasktime = new Date();
+        var timericon = document.createElement("i");
+        divitem.classList.add("item");
+        divitem.classList.add(i);
+        divitem.setAttribute("id", "key");
+        divitem.setAttribute("name", "key" + i);
+        ip.setAttribute("type", "checkbox");
+        ip.checked = Boolean(statusofitems[i]);
+        ip.setAttribute("class", i);
+        divitem.appendChild(ip);
+        li.textContent = taskarr[i];
+        divitem.appendChild(li);
+        ul.appendChild(divitem);
+        icon.setAttribute("class", "fas fa-times");
+        span.classList.add("closed");
+        span.appendChild(icon);
+        timericon.setAttribute("class", "far fa-clock");
+        timericon.classList.add("timer");
+        divitem.appendChild(timericon);
+        divitem.appendChild(span);
+        divitem.setAttribute("deadline", deadlinetime[i]);
+
+        divitem.setAttribute("arrivaltime", arrivaltimearr[i]);
+
+        if (divitem.getAttribute("deadline") == undefined) {
+            alert("No deadline");
+            divitem.setAttribute("deadline", "0");
+        } else {
+            setInterval(function() {
+                var taskobjects = document.getElementsByClassName("item");
+                for (i = 0; i < taskobjects.length; i++) {
+                    if (taskobjects[i].hasAttribute("deadline")) {
+                        var deadline = taskobjects[i].getAttribute("deadline");
+                        if (deadline < new Date().getTime() && taskobjects[i].children[0].checked == false) {
+                            taskobjects[i].style.backgroundColor = "#488B95";
+                        } else if (taskobjects[i].children[0].checked == true) {
+                            taskobjects[i].style.backgroundColor = "white";
+                        } else {
+                            taskobjects[i].style.backgroundColor = "white";
+                        }
+                    }
+                }
+            }, 1000);
+        }
+        arrivaltimearr[i] = (divitem.getAttribute("arrivaltime"));
+        deadlinetime[i] = (divitem.getAttribute("deadline"));
+        console.log(arrivaltimearr);
+        localStorage.setItem("arrivaltask", JSON.stringify(arrivaltimearr));
+        localStorage.setItem("deadlineoftask", JSON.stringify(deadlinetime));
+
+        setInterval(function() {
+            total.innerHTML = document.getElementsByClassName("item").length;
+            donedom.innerHTML = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            rem_count = total.innerHTML - donedom.innerHTML;
+            remaining.textContent = rem_count;
+        }, 100);
+
+        icon.addEventListener("click", function removeelemnt() {
+            total.innerHTML = document.getElementsByClassName("item").length;
+            donedom.innerHTML = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            rem_count = total.innerHTML - donedom.innerHTML;
+            remaining.textContent = rem_count;
+            var removekey = this.parentElement.parentElement;
+            var removeint = parseInt(removekey.className.slice(5, 6));
+            this.parentElement.parentElement.remove();
+            taskarr.splice(removeint, 1);
+            statusofitems.splice(removeint, 1);
+            arrivaltimearr.splice(removeint, 1);
+            deadlinetime.splice(removeint, 1);
+            console.log(taskarr);
+            console.log(removekey);
+            let a = document.getElementsByClassName("item");
+
+
+            console.log("index of deleted element :" + removeint);
+            if (!(removeint == a.length)) {
+                for (i = removeint; i < a.length; i++) {
+                    console.log(a[i].classList[1]);
+                    a[i].classList.add(i);
+                    a[i].classList.remove(i + 1);
+                    console.log(a[i].classList[1]);
+                    total.innerHTML = document.getElementsByClassName("item").length;
+                    donedom.innerHTML = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                    rem_count = total.innerHTML - donedom.innerHTML;
+                    remaining.textContent = rem_count;
+                }
+            }
+            localStorage.setItem("check", JSON.stringify(statusofitems));
+            localStorage.setItem("alltask", JSON.stringify(taskarr));
+
+            localStorage.setItem("arrivaltask", JSON.stringify(arrivaltimearr));
+            localStorage.setItem("deadlineoftask", JSON.stringify(deadlinetime));
+        });
+
+        timericon.addEventListener("click", function() {
+            var input = parseInt(prompt("Enter the time in Minutes at what you want to complete the task"));
+            tasktime.setMinutes(new Date().getMinutes() + input);
+            this.parentElement.setAttribute("deadline", tasktime.getTime());
+            deadlinetime[this.parentElement.classList[1]] = tasktime.getTime();
+            console.log(deadlinetime);
+            setInterval(function() {
+                var taskobjects = document.getElementsByClassName("item");
+                for (i = 0; i < taskobjects.length; i++) {
+                    if (taskobjects[i].hasAttribute("deadline")) {
+                        var deadline = taskobjects[i].getAttribute("deadline");
+                        if (deadline < new Date().getTime() && taskobjects[i].children[0].checked == false) {
+                            taskobjects[i].style.backgroundColor = "#488B95";
+                        } else if (taskobjects[i].children[0].checked == true) {
+                            taskobjects[i].style.backgroundColor = "white";
+                        } else {
+                            taskobjects[i].style.backgroundColor = "white";
+                        }
+                    }
+                }
+            }, 1000);
+            localStorage.setItem("deadlineoftask", JSON.stringify(deadlinetime));
+        });
+
+        ip.addEventListener("click", function checkelement() {
+            var getclass = this.parentElement.className.slice(5, 6);
+            console.log(this.checked);
+            console.log(getclass);
+            if (this.checked == true) {
+                total.innerHTML = document.getElementsByClassName("item").length;
+                donedom.innerHTML = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                rem_count = total.innerHTML - donedom.innerHTML;
+                remaining.textContent = rem_count;
+                console.log("List inside ip.addEvent onload (true): " + statusofitems);
+                this.setAttribute("id", "checked" + i);
+                li.classList.add("checked");
+
+            } else if (this.checked == false) {
+                total.innerHTML = document.getElementsByClassName("item").length;
+                donedom.innerHTML = document.querySelectorAll('input[type="checkbox"]:checked').length;
+                rem_count = total.innerHTML - donedom.innerHTML;
+                remaining.textContent = rem_count;
+                console.log("List inside ip.addEvent onload (false): " + statusofitems);
+                this.setAttribute("id", "unchecked" + i);
+                li.classList.remove("checked");
+
+            }
+            console.log("onload:" + statusofitems);
+            statusofitems[getclass] = this.checked;
+            localStorage.setItem("check", JSON.stringify(statusofitems));
+            donedom.innerHTML = document.querySelectorAll('input[type="checkbox"]:checked').length;
+
+            var interval = setInterval(function() {
+                var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+                if (checkboxes && document.getElementById("remaining").innerHTML == 0) {
+                    confetiii();
+                    clearInterval(interval);
+                }
+
+            }, 1000);
+            interval;
+        });
+    }
+}
+document.addEventListener("DOMContentLoaded", doconload);
+
+function confetiii() {
+    var count = 200;
+    var defaults = {
+        origin: { y: 0.7 }
+    };
+
+    function fire(particleRatio, opts) {
+        confetti(Object.assign({}, defaults, opts, {
+            particleCount: Math.floor(count * particleRatio)
+        }));
+    }
+
+    fire(0.25, {
+        spread: 26,
+        startVelocity: 55,
+    });
+    fire(0.2, {
+        spread: 60,
+    });
+    fire(0.35, {
+        spread: 100,
+        decay: 0.91,
+        scalar: 0.8
+    });
+    fire(0.1, {
+        spread: 120,
+        startVelocity: 25,
+        decay: 0.92,
+        scalar: 1.2
+    });
+    fire(0.1, {
+        spread: 120,
+        startVelocity: 45,
+    });
+}
+
+var interval = setInterval(function() {
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+
+    if (checkboxes && document.getElementById("remaining").innerHTML == 0 && document.querySelectorAll('input[type="checkbox"]').length > 0) {
+        confetiii();
+        clearInterval(interval);
+    }
+
+}, 1000);
+interval;
 
 var transparency = true;
 document.getElementById("menu").addEventListener("click", function() {
@@ -334,6 +644,7 @@ function fetch() {
     }
 }
 document.addEventListener("DOMContentLoaded", fetch);
+
 
 var imagemai = document.getElementById("climate");
 var tempreature = document.getElementById("temp");
